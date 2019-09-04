@@ -1,0 +1,15 @@
+#!/bin/sh -x
+# Invoked as 'compile BUILD_DIR CACHE_DIR ENV_DIR'
+# See https://devcenter.heroku.com/articles/buildpack-api for more details.
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+GITHUB_AUTH_USER="$(cat $ENV_DIR/GITHUB_AUTH_USER)"
+GITHUB_AUTH_TOKEN="$(cat $ENV_DIR/GITHUB_AUTH_TOKEN)"
+GITHUB_REPO="$(cat $ENV_DIR/GITHUB_REPO)"
+GIT_REPO_ROOT="${BUILD_DIR}/GIT"
+
+mkdir -p $(dirname ${GIT_REPO_ROOT})
+git clone --bare "https://${GITHUB_AUTH_USER}:${GITHUB_AUTH_TOKEN}@github.com/${GITHUB_REPO}" ${GIT_REPO_ROOT}
+echo "Cloned repository to ${GIT_REPO_ROOT}"

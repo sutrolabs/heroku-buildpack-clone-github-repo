@@ -1,0 +1,20 @@
+#!/bin/sh
+# Check for required environment vars
+
+if [ "$GITHUB_REPO" == "" ]; then
+  echo "Missing required parameter GITHUB_REPO"
+  exit 1
+fi
+
+if [ "$GITHUB_AUTH_USER" == "" ]; then
+  echo "Missing required parameter GITHUB_AUTH_USER"
+  exit 1
+fi
+
+if [ "$GITHUB_AUTH_TOKEN" == "" ]; then
+  echo "Missing required parameter GITHUB_AUTH_TOKEN"
+  exit 1
+fi
+
+echo "sutrolabs/heroku-buildpack-clone-github-repo"
+exit 0
