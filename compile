@@ -5,11 +5,22 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-GITHUB_AUTH_USER="$(cat $ENV_DIR/GITHUB_AUTH_USER)"
+# Load and validate environment variables
 GITHUB_AUTH_TOKEN="$(cat $ENV_DIR/GITHUB_AUTH_TOKEN)"
 GITHUB_REPO="$(cat $ENV_DIR/GITHUB_REPO)"
 GIT_REPO_ROOT="${BUILD_DIR}/GIT"
 
+if [ "$GITHUB_REPO" == "" ]; then
+  echo "Missing required parameter GITHUB_REPO"
+  exit 1
+fi
+
+if [ "$GITHUB_AUTH_TOKEN" == "" ]; then
+  echo "Missing required parameter GITHUB_AUTH_TOKEN"
+  exit 1
+fi
+
+# Clone repo to specified root
 mkdir -p $(dirname ${GIT_REPO_ROOT})
-git clone --bare "https://${GITHUB_AUTH_USER}:${GITHUB_AUTH_TOKEN}@github.com/${GITHUB_REPO}" ${GIT_REPO_ROOT}
+git clone --bare "https://${GITHUB_AUTH_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPO}" ${GIT_REPO_ROOT}
 echo "Cloned repository to ${GIT_REPO_ROOT}"
